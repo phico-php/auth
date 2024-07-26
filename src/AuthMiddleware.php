@@ -12,7 +12,7 @@ class AuthMiddleware implements MiddlewareInterface
 {
     function handle(Request $request, callable $next)
     {
-        $session = $request->attr('session');
+        $session = $request->attrs->get('session');
         $user = $session->get('user');
 
         if (isset($user->id) and !empty($user->id)) {
