@@ -12,13 +12,15 @@ class AuthMiddleware implements MiddlewareInterface
 {
     function handle(Request $request, callable $next)
     {
+        // @TODO accept config of allowed routes
         $session = $request->attrs->get('session');
         $user = $session->get('user');
 
-        if (isset($user->id) and !empty($user->id)) {
-            return $next($request);
+        if (is_null($user) or !isset($user->id)) {
+            // @TODO pass this url by config
+            return response()->redirect('/sign-in');
         }
 
-        return response()->redirect('/sign-in');
+        return $next($request);
     }
 }
